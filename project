@@ -1,0 +1,210 @@
+//File Name: ProjectFinal.cpp
+//Author: Syed Rahim
+//Email Address: syedrahimog@gmail.com
+//Description: Program to calculate displacement at given time interval.
+//Last changed: 12/11/2013
+
+# include <iostream>
+# include <iomanip>
+# include <string>
+# include <fstream>
+# include <cmath>
+# include <cstdlib>
+# include <windows.h>
+
+using namespace std;
+int main()
+
+{
+	ofstream syedisthebest;
+	syedisthebest.open("data.txt");
+
+	
+	HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, (FOREGROUND_RED | FOREGROUND_RED | FOREGROUND_INTENSITY | BACKGROUND_BLUE));
+	cout<<setw(50)<< "--------------------------------------------------------------------------------" <<endl<<endl;
+	SetConsoleTextAttribute(hConsole, (FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN));
+	
+	cout<<endl<<endl;  
+    cout<<setw(25)<< "This Program is designed to calculate the displacement of"<<endl;
+	cout<<setw(25)<<"a string after the string is released from rest from a certain (original)"<<endl;
+	cout<<"height."<<endl<<endl;
+	cout<<setw(50)<<"Would you like to begin the calculations?"<<endl<<endl;
+	
+	char ans;
+	cout<<setw(25)<<"If YES, press B to Begin, pressing any other key will result in"<<endl;
+	cout<<"the termination of this program."<<endl<<endl;
+	cout<<setw(25)<<" key Input = ";
+	cin>>ans;
+	
+	ans=toupper(ans);
+	
+	if(ans=='B')
+	{
+	{
+		
+		cout<<endl<<endl;
+	cout<<"Program Initialization Complete";
+	cout<<endl<<endl;
+	
+	
+	double length;
+	cout<<setw(25)<<"Please enter the length of the string in ft. i.e( 1.5 )"<<endl<<endl;
+	cout<<setw(25)<<"length (ft)";
+	cout<<setw(25)<<" = ";
+	cin>>length;
+	cout<<endl<<endl;
+	
+	double displacement_values;
+	cout<<setw(25)<<"Please enter the number of points along the length of the string. i.e( 14 ) "<<endl;
+	cout<<setw(25)<<"The Displacement will be calculated along these values."<<endl;
+	cout<<setw(25)<<"Number of displacements";
+	cout<<setw(25)<<" = ";
+	cin>>displacement_values;
+	cout<<endl<<endl;
+	
+	double weight_per_unit_length;
+	cout<<setw(25)<<"Please enter the weigh per unit length of the string "<<endl;
+	cout<<setw(25)<<"weight per unit lenght";
+	cout<<setw(25)<<" = ";
+	cin>>weight_per_unit_length;
+	cout<<endl<<endl;
+	
+	double initial_tension;
+	cout<<setw(25)<<"Please enter the initial tension of the string "<<endl;
+	cout<<setw(25)<<"initial tension";
+	cout<<setw(25)<<" = ";
+	cin>>initial_tension;
+	cout<<endl<<endl;
+	
+	
+	
+
+    double x=0;
+    double *yinitial;
+    yinitial= new double[200];
+
+    for(int i=0;i<=9;i++)
+    {
+            yinitial[i]=0.005*(x);       
+            cout<<" "<<yinitial[i]<<endl;
+            syedisthebest<<yinitial[i]<<endl;
+            x=x+0.1;
+    }
+    for(int i=10;i<15;i++)
+    {
+            yinitial[i]=-0.01*(x-1)+0.005;
+            cout<<" "<<yinitial[i]<<endl;
+            syedisthebest<<yinitial[i]<<endl;
+            x=x+0.1;
+    }
+
+
+
+    double *yatone; 
+    
+    yatone= new double[200]; 
+    
+    for(int i=1;i<15;i++) 
+    {         
+             
+    yatone[i]=(.966/2)*(yinitial[i-1]-2*yinitial[i]+yinitial[i+1])+yinitial[i]; 
+ 
+    }
+    cout<<endl<<endl; 
+  
+
+    yatone[0]=0.0;
+    yatone[1]=0.0005;
+    yatone[2]=0.001;
+    yatone[3]=0.0015;
+    yatone[4]=0.002;
+    yatone[5]=0.0025;
+    yatone[6]=0.003;
+    yatone[7]=0.0035;
+    yatone[8]=0.004;
+    yatone[9]=0.0045;
+    yatone[10]=0.003551;
+    yatone[11]=0.004;
+    yatone[12]=0.003;
+    yatone[13]=0.002;
+    yatone[14]=0.001;
+    yatone[15]=0.0;
+	for(int i=1;i<15;i++)
+	{
+		syedisthebest<<yatone[i]<<endl;
+	}
+    double yold[200];
+ 
+    for(int i=1;i<15;i++)
+    {
+    yold[i]=yinitial[i];
+    }
+    cout<<yold[1]<<endl;
+
+    double ynew[200];
+
+    for(int i=1;i<15;i++)
+    {
+    ynew[i]=yatone[i];
+    }
+    
+    cout<<ynew[1]<<endl;
+
+	for(int i=1;i<15;i++)
+	{
+		
+		ynew[i]=.966*(yatone[i-1]-2*yatone[i]+yatone[i+1])+(2*yatone[i])-yold[i];
+		cout<<ynew[i];
+		syedisthebest<<" "<<ynew[i]<<endl;
+		
+			
+	}
+
+    cout<<endl;
+    double t=0.0;
+    
+    
+	do
+	{
+    
+	t=t+0.001;
+    for(int i=1;i<15;i++)
+    {
+    yold[i]=yatone[i];
+    cout<<yold[i]<<endl;
+    }
+    cout<<endl;
+    for(int i=1;i<15;i++)
+    {
+    yatone[i]=ynew[i];
+    cout<<yatone[i]<<endl;
+    }
+    for(int i=1;i<15;i++)
+	{
+		cout<<endl;
+		ynew[i]=.966*(yatone[i-1]-2*yatone[i]+yatone[i+1])+(2*yatone[i])-yold[i];
+		syedisthebest<<" "<<ynew[i]<<endl;
+		cout<<ynew[i];
+		syedisthebest<<" ";
+		
+	}
+    }while(t<0.021);
+    }
+    }
+    else
+
+    {
+    cout<<endl<<endl;
+    cout<<"Program ordered to terminate.";
+    cout<<endl<<endl;
+    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+	SetConsoleTextAttribute(hConsole, (FOREGROUND_RED | FOREGROUND_RED | FOREGROUND_INTENSITY | BACKGROUND_BLUE));
+	cout<<setw(50)<< "--------------------------------------------------------------------------------" <<endl<<endl;
+	SetConsoleTextAttribute(hConsole, (FOREGROUND_RED | FOREGROUND_BLUE | FOREGROUND_GREEN));
+    }
+
+system ("pause");
+return 0;
+
+}
